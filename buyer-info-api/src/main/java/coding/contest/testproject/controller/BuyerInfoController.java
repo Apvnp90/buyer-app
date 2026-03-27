@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/buyer-info")
 public class BuyerInfoController {
-    
+    //private final variable
     private final IBuyerInfoService buyerInfoService;
 
     public BuyerInfoController(IBuyerInfoService buyerInfoService) {
