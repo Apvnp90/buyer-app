@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import './ListBuyerInformation.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+
 const ListBuyerInformation = ({ onBackToHome }) => {
   const [buyers, setBuyers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +20,7 @@ const ListBuyerInformation = ({ onBackToHome }) => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:8081/api/buyer-info', {
+      const response = await fetch(`${API_URL}/api/buyer-info`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +50,7 @@ const ListBuyerInformation = ({ onBackToHome }) => {
     if (!buyerToDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:8081/api/buyer-info/${buyerToDelete.id}`, {
+      const response = await fetch(`${API_URL}/api/buyer-info/${buyerToDelete.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

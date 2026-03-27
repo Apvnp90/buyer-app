@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './BuyerInfoDetails.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+
 const BuyerInfoDetails = ({ onBackToHome }) => {
   const [formData, setFormData] = useState({
     firstname: '',
@@ -162,7 +164,7 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
     setSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:8081/api/buyer-info', {
+      const response = await fetch(`${API_URL}/api/buyer-info`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

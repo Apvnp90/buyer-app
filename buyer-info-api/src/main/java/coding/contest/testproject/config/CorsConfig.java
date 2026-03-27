@@ -15,7 +15,13 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000"));
+        // Add your Azure Static Web App URL here after deployment
+        // Example: "https://buyer-info-web.azurestaticapps.net"
+        corsConfiguration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:5173", 
+                "http://localhost:3000",
+                "https://mango-field-065202a1e.2.azurestaticapps.net"
+        ));
         corsConfiguration.setAllowedHeaders(Arrays.asList(
                 "Origin", "Access-Control-Allow-Origin", "Content-Type",
                 "Accept", "Authorization", "X-Requested-With",
