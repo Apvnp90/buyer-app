@@ -35,7 +35,7 @@ jobs:
         npm run build
       env:
         # Update this with your Azure backend URL after deployment
-        VITE_API_URL: https://buyer-info-api.azurewebsites.net
+        VITE_API_URL: coding-contest-ui-bge9e5fugugqgubn.canadacentral-01.azurewebsites.net
 
     - name: Deploy to Azure Static Web Apps
       uses: Azure/static-web-apps-deploy@v1
