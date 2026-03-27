@@ -25,21 +25,15 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'zulu'
+        distribution: 'adopt'
         cache: 'maven'
-
-    - name: Verify Java installation
-      run: |
-        java -version
-        echo "JAVA_HOME=$JAVA_HOME"
 
     - name: Build with Maven
       run: |
         cd buyer-info-api
-        chmod +x mvnw
-        ./mvnw clean package -DskipTests
+        mvn clean package -DskipTests -s .mvn/maven-settings.xml
       env:
-        MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2,TLSv1.3"
+        MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2,TLSv1.3 -Djavax.net.ssl.trustStoreType=jks"
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
