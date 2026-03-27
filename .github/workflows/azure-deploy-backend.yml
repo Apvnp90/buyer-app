@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: buyer-info-api    # Set this to your Azure App Service name
+  AZURE_WEBAPP_NAME: coding-contest-ui    # Set this to your Azure App Service name
   JAVA_VERSION: '21'
 
 jobs:
