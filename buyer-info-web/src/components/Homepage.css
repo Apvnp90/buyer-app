@@ -1,0 +1,101 @@
+.homepage-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.homepage-content {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 60px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 100%;
+}
+
+.homepage-content h1 {
+  color: #333;
+  font-size: 36px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.homepage-description {
+  color: #666;
+  font-size: 18px;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.button-group {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.add-buyer-button,
+.view-list-button {
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-buyer-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.add-buyer-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.view-list-button {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.view-list-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+}
+
+.add-buyer-button:active,
+.view-list-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .homepage-content {
+    padding: 40px 30px;
+  }
+
+  .homepage-content h1 {
+    font-size: 28px;
+  }
+
+  .homepage-description {
+    font-size: 16px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .add-buyer-button,
+  .view-list-button {
+    padding: 14px 32px;
+    font-size: 16px;
+    width: 100%;
+  }
+}
