@@ -3,6 +3,7 @@ package coding.contest.testproject.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -28,8 +29,10 @@ public class BuyerInfo {
     @Column(name = "address_line1", nullable = false)
     private String addressLine1;
 
-    @Size(max = 255)
-    @Column(name = "address_line2")
+    @NotBlank(message = "Address line 2 is required")
+    @Size(max = 25, message = "Address line 2 cannot exceed 25 characters")
+    @Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "Address line 2 must contain only alphanumeric characters and spaces")
+    @Column(name = "address_line2", nullable = false, length = 25)
     private String addressLine2;
 
     @NotBlank(message = "City is required")

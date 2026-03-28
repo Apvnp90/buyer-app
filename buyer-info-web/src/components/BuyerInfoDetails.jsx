@@ -9,6 +9,7 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
     firstname: '',
     lastname: '',
     addressline1: '',
+    addressline2: '',
     city: '',
     state: '',
     country: '',
@@ -52,6 +53,16 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
           error = 'Address must contain only alphanumeric characters';
         } else if (value.length > 30) {
           error = 'Address must not exceed 30 characters';
+        }
+        break;
+
+      case 'addressline2':
+        if (!value.trim()) {
+          error = 'Address line 2 is required';
+        } else if (!/^[A-Za-z0-9\s]+$/.test(value)) {
+          error = 'Address line 2 must contain only alphanumeric characters and spaces';
+        } else if (value.length > 25) {
+          error = 'Address line 2 must not exceed 25 characters';
         }
         break;
 
@@ -174,6 +185,7 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
           firstName: formData.firstname,
           lastName: formData.lastname,
           addressLine1: formData.addressline1,
+          addressLine2: formData.addressline2,
           city: formData.city,
           state: formData.state,
           country: formData.country,
@@ -192,6 +204,7 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
           firstname: '',
           lastname: '',
           addressline1: '',
+          addressline2: '',
           city: '',
           state: '',
           country: '',
@@ -289,6 +302,25 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
           />
           {errors.addressline1 && touched.addressline1 && (
             <span className="error-message">{errors.addressline1}</span>
+          )}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="addressline2">
+            Address Line 2 <span className="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="addressline2"
+            name="addressline2"
+            value={formData.addressline2}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={errors.addressline2 && touched.addressline2 ? 'error' : ''}
+            maxLength="25"
+          />
+          {errors.addressline2 && touched.addressline2 && (
+            <span className="error-message">{errors.addressline2}</span>
           )}
         </div>
 

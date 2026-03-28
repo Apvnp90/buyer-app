@@ -2,6 +2,7 @@ package coding.contest.testproject.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class BuyerInfoRequestDTO {
@@ -18,7 +19,9 @@ public class BuyerInfoRequestDTO {
     @Size(max = 255)
     private String addressLine1;
 
-    @Size(max = 255)
+    @NotBlank(message = "Address line 2 is required")
+    @Size(max = 25, message = "Address line 2 cannot exceed 25 characters")
+    @Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "Address line 2 must contain only alphanumeric characters and spaces")
     private String addressLine2;
 
     @NotBlank(message = "City is required")
