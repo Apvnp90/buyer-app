@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './BuyerInfoDetails.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 //Adding BuyerInfoDetails states
-const BuyerInfoDetails = ({ onBackToHome }) => {
+const BuyerInfoDetails = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -234,11 +236,9 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
 
   return (
     <div className="buyer-info-container">
-      {onBackToHome && (
-        <button className="back-button" onClick={onBackToHome}>
-          ← Back to Home
-        </button>
-      )}
+      <button className="back-button" onClick={() => navigate('/')}>
+        ← Back to Home
+      </button>
       <h1>Buyer Information</h1>
       
       {submitMessage.text && (
@@ -249,9 +249,6 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
       
       <form onSubmit={handleSubmit} className="buyer-info-form">
         <div className="form-group">
-          <label htmlFor="firstname">
-            First Name <span className="required">*</span>
-          </label>
           <input
             type="text"
             id="firstname"
@@ -261,16 +258,17 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onBlur={handleBlur}
             className={errors.firstname && touched.firstname ? 'error' : ''}
             maxLength="20"
+            placeholder=" "
           />
+          <label htmlFor="firstname">
+            First Name <span className="required">*</span>
+          </label>
           {errors.firstname && touched.firstname && (
             <span className="error-message">{errors.firstname}</span>
           )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="lastname">
-            Last Name <span className="required">*</span>
-          </label>
           <input
             type="text"
             id="lastname"
@@ -280,16 +278,17 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onBlur={handleBlur}
             className={errors.lastname && touched.lastname ? 'error' : ''}
             maxLength="20"
+            placeholder=" "
           />
+          <label htmlFor="lastname">
+            Last Name <span className="required">*</span>
+          </label>
           {errors.lastname && touched.lastname && (
             <span className="error-message">{errors.lastname}</span>
           )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="addressline1">
-            Address Line 1 <span className="required">*</span>
-          </label>
           <input
             type="text"
             id="addressline1"
@@ -299,16 +298,17 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onBlur={handleBlur}
             className={errors.addressline1 && touched.addressline1 ? 'error' : ''}
             maxLength="30"
+            placeholder=" "
           />
+          <label htmlFor="addressline1">
+            Address Line 1 <span className="required">*</span>
+          </label>
           {errors.addressline1 && touched.addressline1 && (
             <span className="error-message">{errors.addressline1}</span>
           )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="addressline2">
-            Address Line 2 <span className="required">*</span>
-          </label>
           <input
             type="text"
             id="addressline2"
@@ -318,16 +318,17 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onBlur={handleBlur}
             className={errors.addressline2 && touched.addressline2 ? 'error' : ''}
             maxLength="25"
+            placeholder=" "
           />
+          <label htmlFor="addressline2">
+            Address Line 2 <span className="required">*</span>
+          </label>
           {errors.addressline2 && touched.addressline2 && (
             <span className="error-message">{errors.addressline2}</span>
           )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="city">
-            City <span className="required">*</span>
-          </label>
           <input
             type="text"
             id="city"
@@ -336,16 +337,17 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             className={errors.city && touched.city ? 'error' : ''}
+            placeholder=" "
           />
+          <label htmlFor="city">
+            City <span className="required">*</span>
+          </label>
           {errors.city && touched.city && (
             <span className="error-message">{errors.city}</span>
           )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="state">
-            State <span className="required">*</span>
-          </label>
           <input
             type="text"
             id="state"
@@ -354,16 +356,17 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             className={errors.state && touched.state ? 'error' : ''}
+            placeholder=" "
           />
+          <label htmlFor="state">
+            State <span className="required">*</span>
+          </label>
           {errors.state && touched.state && (
             <span className="error-message">{errors.state}</span>
           )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="country">
-            Country <span className="required">*</span>
-          </label>
           <input
             type="text"
             id="country"
@@ -372,16 +375,17 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             className={errors.country && touched.country ? 'error' : ''}
+            placeholder=" "
           />
+          <label htmlFor="country">
+            Country <span className="required">*</span>
+          </label>
           {errors.country && touched.country && (
             <span className="error-message">{errors.country}</span>
           )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="phonenumber">
-            Phone Number <span className="required">*</span>
-          </label>
           <input
             type="tel"
             id="phonenumber"
@@ -391,17 +395,17 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onBlur={handleBlur}
             className={errors.phonenumber && touched.phonenumber ? 'error' : ''}
             maxLength="10"
-            placeholder="10 digits"
+            placeholder=" "
           />
+          <label htmlFor="phonenumber">
+            Phone Number <span className="required">*</span>
+          </label>
           {errors.phonenumber && touched.phonenumber && (
             <span className="error-message">{errors.phonenumber}</span>
           )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="emailaddress">
-            Email Address <span className="required">*</span>
-          </label>
           <input
             type="email"
             id="emailaddress"
@@ -410,7 +414,11 @@ const BuyerInfoDetails = ({ onBackToHome }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             className={errors.emailaddress && touched.emailaddress ? 'error' : ''}
+            placeholder=" "
           />
+          <label htmlFor="emailaddress">
+            Email Address <span className="required">*</span>
+          </label>
           {errors.emailaddress && touched.emailaddress && (
             <span className="error-message">{errors.emailaddress}</span>
           )}

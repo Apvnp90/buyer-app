@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import './Homepage.css';
 
-const Homepage = ({ onAddBuyerInfo, onViewBuyerList }) => {
+const Homepage = () => {
   return (
     <div className="homepage-container">
       <div className="homepage-content">
@@ -9,18 +10,16 @@ const Homepage = ({ onAddBuyerInfo, onViewBuyerList }) => {
           Manage and store buyer information efficiently and securely
         </p>
         <div className="button-group">
-          <button 
-            className="add-buyer-button"
-            onClick={onAddBuyerInfo}
-          >
-            Add Buyer Information
-          </button>
-          <button 
-            className="view-list-button"
-            onClick={onViewBuyerList}
-          >
-            View Buyer List
-          </button>
+          <Link to="/add-buyer">
+            <button className="add-buyer-button">
+              Add Buyer Information
+            </button>
+          </Link>
+          <Link to="/buyer-list">
+            <button className="view-list-button">
+              View Buyer List
+            </button>
+          </Link>
         </div>
       </div>
     </div>

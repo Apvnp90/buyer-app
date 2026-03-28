@@ -100,6 +100,7 @@
 - Do NOT add caching (`@Cacheable`) unless explicitly requested
 
 ## Frontend Guidelines (React + Vite)
+- implement proper routing with React Router and a dedicated routes file
 
 ### Project Structure
 - Place components in: `src/components/` folder
@@ -118,10 +119,15 @@
 - Display user-friendly error messages in the UI
 
 ### Styling Guidelines
-- Use CSS modules or separate CSS files (avoid inline styles unless necessary)
-- Follow mobile-first responsive design principles
-- Use CSS Grid or Flexbox for layouts
-- Include hover states and transitions for interactive elements
+- Design modern, responsive UI using CSS Flexbox or Grid
+- Use media queries for mobile responsiveness
+- Keep CSS modular and scoped to components (avoid global styles)
+- Use consistent spacing, font sizes, and color schemes for a polished look
+- Use clean and minimalistic design with soft shadows, smooth transitions, hover effects for a modern aesthetic
+- Apply a light theme using css variables for easy theming and maintainability
+- Generate CSS and HTML in separate sections
+- Don't set the container and buttons with rounded edges
+- Only highlight the button when hovered and don't add jump transition
 
 ### State Management
 - Use useState for local component state

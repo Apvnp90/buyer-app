@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ListBuyerInformation.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const ListBuyerInformation = ({ onBackToHome }) => {
+const ListBuyerInformation = () => {
+  const navigate = useNavigate();
   const [buyers, setBuyers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -87,11 +89,9 @@ const ListBuyerInformation = ({ onBackToHome }) => {
 
   return (
     <div className="list-buyer-container">
-      {onBackToHome && (
-        <button className="back-button" onClick={onBackToHome}>
-          ← Back to Home
-        </button>
-      )}
+      <button className="back-button" onClick={() => navigate('/')}>
+        ← Back to Home
+      </button>
       
       <h1>Buyer Information List</h1>
 
