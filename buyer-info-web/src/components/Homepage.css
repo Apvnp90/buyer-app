@@ -1,9 +1,44 @@
 .homepage-container {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: var(--spacing-lg);
+  position: relative;
+}
+
+.user-info-bar {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.welcome-text {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.logout-button {
+  padding: 0.5rem 1.25rem;
+  background: var(--error);
+  color: white;
+  border: none;
+  border-radius: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.logout-button:hover {
+  background: var(--error-dark);
+  box-shadow: var(--shadow-md);
 }
 
 .homepage-content {
@@ -51,7 +86,8 @@
 }
 
 .add-buyer-button,
-.view-list-button {
+.view-list-button,
+.letstry-button {
   padding: 1rem 2.5rem;
   font-size: 1rem;
   font-weight: 600;
@@ -80,6 +116,15 @@
   background: var(--secondary-hover);
 }
 
+.letstry-button {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.letstry-button:hover {
+  background: linear-gradient(135deg, #ff5722 0%, #ff6b35 100%);
+}
+
 @media (max-width: 768px) {
   .homepage-content {
     padding: 40px 30px;
@@ -99,7 +144,8 @@
   }
 
   .add-buyer-button,
-  .view-list-button {
+  .view-list-button,
+  .letstry-button {
     padding: 14px 32px;
     font-size: 16px;
     width: 100%;

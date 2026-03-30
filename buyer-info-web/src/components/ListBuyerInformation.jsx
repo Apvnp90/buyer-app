@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../services/authService';
 import './ListBuyerInformation.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -26,6 +27,7 @@ const ListBuyerInformation = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          ...authService.getAuthHeader()
         }
       });
 
@@ -37,7 +39,7 @@ const ListBuyerInformation = () => {
       }
     } catch (err) {
       console.error('Error fetching buyers:', err);
-      setError('Network error. Please ensure the backend server is running on port 8081.');
+      setError('Network error. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
@@ -56,6 +58,7 @@ const ListBuyerInformation = () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          ...authService.getAuthHeader()
         }
       });
 

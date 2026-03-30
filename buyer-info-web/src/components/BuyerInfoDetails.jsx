@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../services/authService';
 import './BuyerInfoDetails.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -182,6 +183,7 @@ const BuyerInfoDetails = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...authService.getAuthHeader()
         },
         body: JSON.stringify({
           firstName: formData.firstname,
@@ -227,7 +229,7 @@ const BuyerInfoDetails = () => {
       console.error('Error submitting form:', error);
       setSubmitMessage({ 
         type: 'error', 
-        text: 'Network error. Please ensure the backend server is running on port 8081.' 
+        text: 'Network error. Please check your connection and try again.' 
       });
     } finally {
       setSubmitting(false);

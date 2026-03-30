@@ -1,0 +1,158 @@
+2026-03-29T20:18:58.844-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] c.c.testproject.TestprojectApplication   : Starting TestprojectApplication using Java 25.0.2 with PID 20004 (C:\Users\PAnnama\source\testproject\buyer-info-api\target\classes started by PAnnama in C:\Users\PAnnama\source\testproject\buyer-info-api)
+2026-03-29T20:18:58.849-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [restartedMain] c.c.testproject.TestprojectApplication   : Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-29T20:18:58.850-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] c.c.testproject.TestprojectApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-03-29T20:18:58.975-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-29T20:18:58.976-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-29T20:18:59.970-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-29T20:19:00.106-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 124 ms. Found 2 JPA repository interfaces.
+2026-03-29T20:19:01.036-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-03-29T20:19:01.059-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-29T20:19:01.061-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-29T20:19:01.148-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-29T20:19:01.149-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2172 ms
+2026-03-29T20:19:01.362-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-29T20:19:01.501-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-03-29T20:19:01.564-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-29T20:19:01.960-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-29T20:19:02.044-04:00  WARN 20004 --- [MyBuyerInfoProject] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-29T20:19:03.249-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-29T20:19:03.285-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-29T20:19:03.759-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@587d643c
+2026-03-29T20:19:03.771-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-29T20:19:03.850-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-29T20:19:04.386-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [restartedMain] c.c.t.config.JwtAuthenticationFilter     : Filter 'jwtAuthenticationFilter' configured for use
+2026-03-29T20:19:04.548-04:00  WARN 20004 --- [MyBuyerInfoProject] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-29T20:19:04.945-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@45e27403, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@664b6927, org.springframework.security.web.context.SecurityContextHolderFilter@2f7c1f6d, org.springframework.security.web.header.HeaderWriterFilter@537f7cc6, org.springframework.web.filter.CorsFilter@57d5cedf, org.springframework.security.web.authentication.logout.LogoutFilter@a976637, coding.contest.testproject.config.JwtAuthenticationFilter@614cc50e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@14705f71, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@e2da1c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@25bff52f, org.springframework.security.web.session.SessionManagementFilter@5b75a786, org.springframework.security.web.access.ExceptionTranslationFilter@2f50800f, org.springframework.security.web.access.intercept.AuthorizationFilter@32323717]
+2026-03-29T20:19:05.219-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-03-29T20:19:05.318-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2026-03-29T20:19:05.335-04:00  INFO 20004 --- [MyBuyerInfoProject] [restartedMain] c.c.testproject.TestprojectApplication   : Started TestprojectApplication in 7.102 seconds (process running for 7.904)
+2026-03-29T20:19:46.905-04:00  INFO 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-29T20:19:46.906-04:00  INFO 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-29T20:19:46.907-04:00  INFO 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-03-29T20:19:46.950-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login
+2026-03-29T20:19:46.984-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-03-29T20:19:46.993-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login
+2026-03-29T20:19:47.116-04:00  INFO 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] c.c.testproject.services.AuthService     : Attempting to login user: TestUser
+2026-03-29T20:19:47.272-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.password,
+        u1_0.role,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.username=?
+2026-03-29T20:19:47.412-04:00  INFO 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-1] c.c.testproject.services.AuthService     : User logged in successfully: TestUser
+2026-03-29T20:20:44.447-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/buyer-info
+2026-03-29T20:20:44.452-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/buyer-info
+2026-03-29T20:20:44.563-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.password,
+        u1_0.role,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.username=?
+2026-03-29T20:20:44.572-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/buyer-info
+2026-03-29T20:20:44.645-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    insert 
+    into
+        buyer_info
+        (address_line1, address_line2, city, country, email_address, first_name, last_name, phone_number, state) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-03-29T20:20:52.706-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/buyer-info
+2026-03-29T20:20:52.713-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.password,
+        u1_0.role,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.username=?
+2026-03-29T20:20:52.738-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/buyer-info
+2026-03-29T20:20:52.771-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        bi1_0.id,
+        bi1_0.address_line1,
+        bi1_0.address_line2,
+        bi1_0.city,
+        bi1_0.country,
+        bi1_0.email_address,
+        bi1_0.first_name,
+        bi1_0.last_name,
+        bi1_0.phone_number,
+        bi1_0.state 
+    from
+        buyer_info bi1_0
+2026-03-29T20:20:52.810-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/buyer-info
+2026-03-29T20:20:52.826-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-5] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.password,
+        u1_0.role,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.username=?
+2026-03-29T20:20:52.859-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/buyer-info
+2026-03-29T20:20:52.863-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-5] org.hibernate.SQL                        : 
+    select
+        bi1_0.id,
+        bi1_0.address_line1,
+        bi1_0.address_line2,
+        bi1_0.city,
+        bi1_0.country,
+        bi1_0.email_address,
+        bi1_0.first_name,
+        bi1_0.last_name,
+        bi1_0.phone_number,
+        bi1_0.state 
+    from
+        buyer_info bi1_0
+2026-03-29T20:21:05.094-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/buyer-info/6
+2026-03-29T20:21:05.099-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing DELETE /api/buyer-info/6
+2026-03-29T20:21:05.110-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-7] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.password,
+        u1_0.role,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.username=?
+2026-03-29T20:21:05.116-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured DELETE /api/buyer-info/6
+2026-03-29T20:21:05.128-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-7] org.hibernate.SQL                        : 
+    select
+        bi1_0.id,
+        bi1_0.address_line1,
+        bi1_0.address_line2,
+        bi1_0.city,
+        bi1_0.country,
+        bi1_0.email_address,
+        bi1_0.first_name,
+        bi1_0.last_name,
+        bi1_0.phone_number,
+        bi1_0.state 
+    from
+        buyer_info bi1_0 
+    where
+        bi1_0.id=?
+2026-03-29T20:21:05.148-04:00 DEBUG 20004 --- [MyBuyerInfoProject] [http-nio-8080-exec-7] org.hibernate.SQL                        : 
+    delete 
+    from
+        buyer_info 
+    where
+        id=?

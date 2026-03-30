@@ -57,6 +57,216 @@
 - Do NOT add extra finder methods in repositories unless specified
 - Do NOT implement full CRUD if only save/create is requested
 
+## Exception Handling Guidelines
+
+### Backend Exception Handling (Spring Boot)
+
+#### Custom Exceptions
+- Create custom exceptions for business logic errors in `exception/` package
+- Extend `RuntimeException` for unchecked exceptions
+- Use descriptive names: `DuplicateUsernameException`, `InvalidCredentialsException`, `ResourceNotFoundException`
+
+**Example Custom Exceptions:**
+```java
+public class DuplicateUsernameException extends RuntimeException {
+    public DuplicateUsernameException(String message) {
+        super(message);
+    }
+}
+
+public class InvalidCredentialsException extends RuntimeException {
+    public InvalidCredentialsException(String message) {
+        super(message);
+    }
+}
+```
+
+#### Global Exception Handler
+- Create `GlobalExceptionHandler` class in `exception/` package
+- Annotate with `@RestControllerAdvice`
+- Add logger: `private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);`
+- Handle specific exceptions with appropriate HTTP status codes
+- Include request path and timestamp in error responses
+- **Never expose internal error details or stack traces in production responses**
+
+**Required Exception Handlers:**
+- `MethodArgumentNotValidException` (400 Bad Request) - Validation errors
+- Custom business exceptions (409 Conflict, 401 Unauthorized, etc.)
+- `DataIntegrityViolationException` (409 Conflict) - Database constraint violations
+- `AccessDeniedException` (403 Forbidden) - Security violations
+- `BadCredentialsException` (401 Unauthorized) - Authentication failures
+- `Exception` (500 Internal Server Error) - Generic fallback
+
+**Global Exception Handler Template:**
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationExceptions(
+            MethodArgumentNotValidException ex, WebRequest request) {
+        
+        logger.warn("Validation failed for request: {}", request.getDescription(false));
+        
+        Map<String, Object> response = new HashMap<>();
+        Map<String, String> errors = new HashMap<>();
+        
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("errors", errors);
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+        
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DuplicateUsernameException.class)
+    public ResponseEntity<Map<String, Object>> handleDuplicateUsername(
+            DuplicateUsernameException ex, WebRequest request) {
+        
+        logger.warn("Duplicate username attempt: {}", ex.getMessage());
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.CONFLICT.value());
+        response.put("message", ex.getMessage());
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+        
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleGenericException(
+            Exception ex, WebRequest request) {
+        
+        logger.error("Unhandled exception: {} | Request: {}", 
+            ex.getMessage(), request.getDescription(false), ex);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.put("message", "An unexpected error occurred. Please try again later.");
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+        
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+
+#### Service Layer Exception Handling
+- Throw custom exceptions for business logic errors
+- Add logger to all service classes
+- Log exceptions before throwing them
+- Use descriptive exception messages
+
+**Service Layer Pattern:**
+```java
+@Service
+public class AuthService implements IAuthService {
+    
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
+    
+    @Override
+    public AuthResponseDTO register(RegisterRequestDTO registerRequest) {
+        logger.info("Attempting to register user: {}", registerRequest.getUsername());
+        
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
+            logger.warn("Registration failed: username already exists - {}", registerRequest.getUsername());
+            throw new DuplicateUsernameException("Username already exists");
+        }
+        
+        // Business logic...
+        logger.info("User registered successfully: {}", user.getUsername());
+        return response;
+    }
+}
+```
+
+#### HTTP Status Code Standards
+- **200 OK**: Successful GET, PUT, PATCH
+- **201 Created**: Successful POST (resource created)
+- **400 Bad Request**: Validation errors, malformed request
+- **401 Unauthorized**: Authentication required or failed
+- **403 Forbidden**: Authenticated but not authorized
+- **404 Not Found**: Resource doesn't exist
+- **409 Conflict**: Duplicate resource, constraint violation
+- **500 Internal Server Error**: Unexpected server error
+
+#### Error Response Structure
+All error responses should follow consistent structure:
+```json
+{
+  "timestamp": "2026-03-29T10:15:30",
+  "status": 400,
+  "message": "Error message",
+  "errors": {
+    "field": "Field-specific error"
+  },
+  "path": "/api/endpoint"
+}
+```
+
+### Frontend Exception Handling (React)
+
+#### API Error Handling
+- Wrap all API calls in try-catch blocks
+- Handle HTTP error responses separately from network errors
+- Display user-friendly error messages
+- Use loggerService for error logging
+- Never show technical error details to users
+
+**API Call Pattern:**
+```javascript
+try {
+  const response = await fetch(url, options);
+  
+  if (response.ok) {
+    const data = await response.json();
+    // Handle success
+  } else {
+    const errorData = await response.json();
+    loggerService.error('API error', errorData.message, { status: response.status });
+    setError(errorData.message || 'An error occurred');
+  }
+} catch (err) {
+  loggerService.error('Network error', err, { url });
+  setError('Network error. Please check your connection and try again.');
+}
+```
+
+#### Error Boundary
+- Use ErrorBoundary component to catch React rendering errors
+- Log errors to Application Insights
+- Display user-friendly fallback UI
+- Provide reload/recovery option
+
+### Exception Handling Best Practices
+
+#### DO:
+✅ Create custom exceptions for business logic errors
+✅ Log all exceptions with appropriate severity levels
+✅ Include request context in error logs (path, user, timestamp)
+✅ Use appropriate HTTP status codes
+✅ Return consistent error response structure
+✅ Sanitize error messages before sending to client
+✅ Handle specific exceptions before generic ones
+
+#### DON'T:
+❌ Expose stack traces in production error responses
+❌ Use generic RuntimeException for business logic errors
+❌ Return internal error messages to clients
+❌ Log sensitive data (passwords, tokens, PII)
+❌ Catch exceptions without handling them
+❌ Return HTTP 200 with error message in body
+❌ Skip logging in exception handlers
+
 ## PostgreSQL & Database Guidelines
 
 ### Configuration Standards
@@ -141,3 +351,348 @@
 - Add loading spinners for async operations
 - Display success and error messages to users
 - Include proper form validation when working with forms
+
+## Logging Guidelines
+
+**Standard Practice**: Use Azure Application Insights for centralized logging and monitoring in production applications.
+
+### Azure Application Insights Setup (Required for New Projects)
+
+#### Backend Setup (Spring Boot)
+
+**1. Add Dependency to pom.xml:**
+```xml
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>applicationinsights-spring-boot-starter</artifactId>
+    <version>3.4.19</version>
+</dependency>
+```
+
+**2. Configure in application.properties:**
+```properties
+# Azure Application Insights
+azure.application-insights.connection-string=${APPLICATIONINSIGHTS_CONNECTION_STRING:}
+```
+
+**3. Set Environment Variable in Azure App Service:**
+- Variable Name: `APPLICATIONINSIGHTS_CONNECTION_STRING`
+- Value: Connection string from Azure Application Insights resource
+
+#### Frontend Setup (React)
+
+**1. Install Package:**
+```bash
+npm install @microsoft/applicationinsights-web
+```
+
+**2. Create `src/services/appInsights.js`:**
+```javascript
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+
+let appInsights = null;
+const connectionString = import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING;
+
+if (connectionString) {
+  appInsights = new ApplicationInsights({
+    config: {
+      connectionString: connectionString,
+      enableAutoRouteTracking: true,
+      disableFetchTracking: false,
+      disableAjaxTracking: false
+    }
+  });
+  appInsights.loadAppInsights();
+  appInsights.trackPageView();
+}
+
+export default appInsights;
+```
+
+**3. Initialize in main.jsx:**
+```javascript
+import './services/appInsights' // Add this import
+```
+
+**4. Set Environment Variable:**
+- Create `.env.production` with: `VITE_APPINSIGHTS_CONNECTION_STRING=<connection-string>`
+- Add same variable in Azure Static Web Apps Configuration
+
+### Backend Logging (Spring Boot)
+
+#### Logging Standards
+- Use SLF4J logger with Logback (Spring Boot default)
+- Add logger declaration at the top of each class: `private static final Logger logger = LoggerFactory.getLogger(ClassName.class);`
+- Never use `System.out.println()` or `e.printStackTrace()` in production code
+- Import: `import org.slf4j.Logger;` and `import org.slf4j.LoggerFactory;`
+- Application Insights automatically captures all SLF4J logs
+
+#### Log Levels Usage
+- **ERROR**: For exceptions and errors that need immediate attention
+- **WARN**: For potentially harmful situations or deprecated features
+- **INFO**: For important business logic events (user login, data saved, etc.)
+- **DEBUG**: For detailed diagnostic information (method entry/exit, variable values)
+- **TRACE**: For very detailed debugging (SQL parameter binding, etc.)
+
+#### What to Log
+- Controller: Log incoming requests and responses
+- Service: Log business logic execution (start/success/failure)
+- Repository: Log only if custom queries are complex
+- Exception Handler: Always log exceptions with stack traces
+- Security: Log authentication attempts, authorization failures
+- Important state changes: User registration, data creation/deletion
+
+#### What NOT to Log
+- Passwords, JWT tokens, or any credentials
+- Full credit card numbers or sensitive PII
+- Large response payloads (log IDs instead)
+- Inside loops (causes log spam)
+- Redundant information already in stack traces
+
+#### Logging Patterns
+
+**Controller Logging:**
+```java
+@RestController
+public class BuyerInfoController {
+    private static final Logger logger = LoggerFactory.getLogger(BuyerInfoController.class);
+    
+    @PostMapping("/api/buyer-info")
+    public ResponseEntity<?> createBuyerInfo(@Valid @RequestBody BuyerInfoRequestDTO request) {
+        logger.info("Creating buyer info for: {}", request.getFirstName());
+        try {
+            BuyerInfoResponseDTO response = service.saveBuyerInfo(request);
+            logger.info("Buyer created successfully with ID: {}", response.getId());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Failed to create buyer info", e);
+            throw e;
+        }
+    }
+}
+```
+
+**Service Logging:**
+```java
+@Service
+public class BuyerInfoService {
+    private static final Logger logger = LoggerFactory.getLogger(BuyerInfoService.class);
+    
+    public BuyerInfoResponseDTO saveBuyerInfo(BuyerInfoRequestDTO request) {
+        logger.debug("Saving buyer info: {}", request);
+        try {
+            // Business logic
+            logger.info("Successfully saved buyer with ID: {}", saved.getId());
+            return response;
+        } catch (Exception e) {
+            logger.error("Error saving buyer info for: {}", request.getFirstName(), e);
+            throw new RuntimeException("Failed to save buyer", e);
+        }
+    }
+}
+```
+
+**Exception Handler Logging:**
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception ex, WebRequest request) {
+        logger.error("Unhandled exception: {} | Request: {}", 
+            ex.getMessage(), request.getDescription(false), ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("An error occurred");
+    }
+}
+```
+
+#### Log Configuration (application.properties)
+```properties
+# Logging levels
+logging.level.root=INFO
+logging.level.coding.contest.testproject=DEBUG
+logging.level.org.springframework.security=DEBUG
+
+# Log file
+logging.file.name=logs/buyer-info-api.log
+logging.file.max-size=10MB
+logging.file.max-history=30
+
+# Console pattern
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+```
+
+### Frontend Logging (React)
+
+#### Logging Service
+- Create a centralized `loggerService.js` in `src/services/`
+- Use logger methods: `logger.error()`, `logger.warn()`, `logger.info()`, `logger.debug()`
+- Never use `console.log()` directly in components
+- Always include context (component name, user action, relevant data)
+- Integrate with Application Insights to send logs to Azure
+
+#### Frontend Logging Service Template
+
+**loggerService.js with Application Insights:**
+```javascript
+import appInsights from './appInsights';
+
+const loggerService = {
+  error: (message, error, context = {}) => {
+    console.error(`[ERROR] ${message}`, {
+      error: error?.message || error,
+      stack: error?.stack,
+      context,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Send to Application Insights
+    if (appInsights) {
+      appInsights.trackException({
+        exception: error instanceof Error ? error : new Error(message),
+        properties: { message, ...context }
+      });
+    }
+  },
+
+  warn: (message, context = {}) => {
+    console.warn(`[WARN] ${message}`, { context, timestamp: new Date().toISOString() });
+    if (appInsights) {
+      appInsights.trackTrace({
+        message: `[WARN] ${message}`,
+        severityLevel: 2,
+        properties: context
+      });
+    }
+  },
+
+  info: (message, context = {}) => {
+    console.info(`[INFO] ${message}`, { context, timestamp: new Date().toISOString() });
+    if (appInsights) {
+      appInsights.trackTrace({
+        message: `[INFO] ${message}`,
+        severityLevel: 1,
+        properties: context
+      });
+    }
+  },
+
+  debug: (message, context = {}) => {
+    if (import.meta.env.DEV) {
+      console.debug(`[DEBUG] ${message}`, { context });
+    }
+  }
+};
+
+export default loggerService;
+```
+
+#### Frontend Logging Patterns
+
+**Component Logging:**
+```javascript
+import loggerService from '../services/loggerService';
+
+const BuyerInfoDetails = () => {
+  const handleSubmit = async (e) => {
+    try {
+      loggerService.info('Submitting buyer form', { firstName: formData.firstname });
+      
+      const response = await fetch(url, options);
+      
+      if (response.ok) {
+        loggerService.info('Buyer saved successfully');
+      } else {
+        loggerService.error('Failed to save buyer', await response.text(), { 
+          status: response.status 
+        });
+      }
+    } catch (err) {
+      loggerService.error('Network error', err, { apiUrl: API_URL });
+    }
+  };
+};
+```
+
+#### Frontend Log Levels
+- **error()**: API failures, network errors, exceptions
+- **warn()**: Validation warnings, deprecated features
+- **info()**: Successful operations, user actions
+- **debug()**: Detailed debugging (development only)
+
+#### Error Boundary
+- Wrap main App component with ErrorBoundary
+- Log all React errors to Application Insights via loggerService
+- Display user-friendly error messages
+
+**ErrorBoundary.jsx:**
+```javascript
+import React from 'react';
+import appInsights from '../services/appInsights';
+
+class ErrorBoundary extends React.Component {
+  componentDidCatch(error, errorInfo) {
+    // Send to Application Insights
+    if (appInsights) {
+      appInsights.trackException({
+        exception: error,
+        properties: { componentStack: errorInfo.componentStack }
+      });
+    }
+  }
+  // ... rest of component
+}
+```
+
+### General Logging Principles
+
+#### DO:
+✅ Log at entry and exit of important operations
+✅ Include correlation IDs for tracing requests
+✅ Use parameterized logging: `logger.info("User {} logged in", username)`
+✅ Log exceptions with full stack traces
+✅ Include timestamps and thread information
+✅ Use appropriate log levels
+✅ Sanitize sensitive data before logging
+
+#### DON'T:
+❌ Log passwords, tokens, or API keys
+❌ Log inside loops or high-frequency methods
+❌ Use string concatenation in log statements
+❌ Log duplicate information
+❌ Leave debug logs in production
+❌ Ignore exceptions silently
+❌ Log entire objects with sensitive fields
+
+### Production Logging with Application Insights
+
+#### What Application Insights Automatically Tracks:
+- **Backend**: HTTP requests/responses, database queries, exceptions, dependencies, performance metrics
+- **Frontend**: Page views, AJAX/Fetch requests, JavaScript errors, page load performance
+- **End-to-end correlation**: Tracks requests from frontend → backend → database
+
+#### Configuration Checklist:
+- ✅ Create Application Insights resource in Azure Portal
+- ✅ Copy connection string from Azure Portal
+- ✅ Set `APPLICATIONINSIGHTS_CONNECTION_STRING` in Azure App Service (Backend)
+- ✅ Set `VITE_APPINSIGHTS_CONNECTION_STRING` in Azure Static Web Apps (Frontend)
+- ✅ Add Application Insights dependency to pom.xml
+- ✅ Install `@microsoft/applicationinsights-web` npm package
+- ✅ Create `appInsights.js` and import in main.jsx
+- ✅ Integrate Application Insights with loggerService
+- ✅ Update ErrorBoundary to send errors to Application Insights
+
+#### Monitoring Best Practices:
+- Configure log retention: 30-90 days (free tier: 90 days)
+- Review Performance tab for slow API endpoints
+- Check Failures tab daily for exceptions
+- Use Live Metrics for real-time monitoring during deployments
+- Monitor log volume to prevent excessive logging
+- Review and clean up debug logs before deployment
+
+#### Local Development:
+- Use console logging in development (Application Insights optional)
+- Set connection string in `.env.development` for local testing if needed
+- Application Insights gracefully handles missing connection string (no errors)
